@@ -2,18 +2,13 @@
 # Install script for LEMP on Windows - by ronilaukkarinen.
 
 # Helpers:
-currentfile=`basename $0`
 txtbold=$(tput bold)
-boldyellow=${txtbold}$(tput setaf 3)
 boldgreen=${txtbold}$(tput setaf 2)
-boldwhite=${txtbold}$(tput setaf 7)
 yellow=$(tput setaf 3)
 red=$(tput setaf 1)
 green=$(tput setaf 2)
 white=$(tput setaf 7)
 txtreset=$(tput sgr0)
-LOCAL_IP=$(ifconfig | grep -Eo "inet (addr:)?([0-9]*\.){3}[0-9]*" | grep -Eo "([0-9]*\.){3}[0-9]*" | grep -v "127.0.0.1")
-YEAR=$(date +%y)
 
 echo "${yellow}Updating apt...${txtreset}"
 sudo apt-get update
@@ -22,7 +17,6 @@ echo "${yellow}Installing nginx.${txtreset}"
 sudo apt-get install nginx-full -y
 sudo systemctl enable nginx
 sudo service nginx start
-curl -IL http://127.0.0.1:80
 echo "${boldgreen}nginx installed and running.${txtreset}"
 echo "${yellow}Setting up nginx.${txtreset}"
 sudo mkdir -p /etc/nginx/global
@@ -33,7 +27,7 @@ sudo chmod -R 775 /etc/nginx/sites-enabled
 sudo chmod -R 775 /etc/nginx/sites-available
 sudo chmod -R 775 /etc/nginx/global
 sudo echo "worker_processes 8;
-  
+
 events {  
         multi_accept on;
         accept_mutex on;
