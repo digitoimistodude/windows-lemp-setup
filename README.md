@@ -17,8 +17,8 @@ You may want to add your user and group correctly to `/etc/php/7.2/fpm/pool.d/ww
 ```` nginx
 catch_workers_output = yes
 php_flag[display_errors] = On
-php_admin_value[error_log] = /var/log/fpm7.0-php.www.log 
-slowlog = /var/log/fpm7.0-php.slow.log 
+php_admin_value[error_log] = /var/log/fpm7.2-php.www.log 
+slowlog = /var/log/fpm7.2-php.slow.log 
 php_admin_flag[log_errors] = On
 php_admin_value[memory_limit] = 1024M
 request_slowlog_timeout = 10
