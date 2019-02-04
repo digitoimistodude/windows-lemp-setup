@@ -6,7 +6,7 @@ Although we use MacOS for web development ([macos-lemp-setup](https://github.com
 
 1. [Install Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10), choose Ubuntu 16.04 if possible
 2. Mount projects: `sudo mv /var/www/html ~/ && rm -rf /var/www && sudo ln -s /mnt/c/Users/yourusername/Projects /var/www && sudo mv ~/html /var/www/`
-3. Run oneliner setup below
+3. Run setup
 
 ## Oneliner setup
 
