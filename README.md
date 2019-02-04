@@ -39,7 +39,7 @@ server {
     listen 80;
     root /var/www/example;
     index index.html index.htm index.php;
-    server_name example.dev www.example.dev;
+    server_name example.test www.example.test;
     include php7.conf;
     include global/wordpress.conf;
 }
