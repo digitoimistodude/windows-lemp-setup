@@ -12,7 +12,7 @@ Although we use MacOS for web development ([macos-lemp-setup](https://github.com
 
 ### Post install
 
-You may want to add your user and group correctly to `/usr/local/etc/php/7.0/php-fpm.d/www.conf` and set these to the bottom:
+You may want to add your user and group correctly to `/etc/php/7.2/fpm/pool.d/www.conf` and set these to the bottom:
 
 ```` nginx
 catch_workers_output = yes
@@ -39,7 +39,7 @@ server {
 }
 ````
 
-Default my.cnf would be something like this (already added by install.sh in `/usr/local/etc/my.cnf`:
+Default my.cnf would be something like this (already added by install.sh in `/etc/my.cnf`:
 
 ````
 #
