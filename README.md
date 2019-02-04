@@ -5,8 +5,8 @@ Although we use MacOS for web development ([macos-lemp-setup](https://github.com
 ### Prequisites 
 
 1. [Install Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10), choose Ubuntu 16.04 if possible
-2. Login as root, rename /root to /root2 and mount home to root (naturally replace yourusername with your user name): `sudo ln -s /mnt/c/Users/yourusername /root`
-3. Move everything under /root2 to /root and remove /root2.
+2. Mount projects: `sudo mv /var/www/html ~/ && rm -rf /var/www && sudo ln -s /mnt/c/Users/yourusername/Projects /var/www && sudo mv ~/html /var/www/`
+3. Run oneliner setup below
 
 ## Oneliner setup
 
