@@ -25,15 +25,10 @@ sudo service nginx start
 curl -IL http://127.0.0.1:80
 echo "${boldgreen}nginx installed and running.${txtreset}"
 echo "${yellow}Setting up nginx.${txtreset}"
-sudo chmod -R 775 /usr/local/etc/nginx
-sudo ln -sfnv /usr/local/etc/nginx /etc/nginx
 sudo mkdir -p /etc/nginx/global
-sudo mkdir -p /usr/local/etc/nginx
 sudo mkdir -p /etc/nginx/sites-enabled
 sudo mkdir -p /etc/nginx/sites-available
 sudo mkdir -p /etc/nginx/global
-sudo chmod -R 775 /etc/nginx/global
-sudo chmod -R 775 /usr/local/etc/nginx
 sudo chmod -R 775 /etc/nginx/sites-enabled
 sudo chmod -R 775 /etc/nginx/sites-available
 sudo chmod -R 775 /etc/nginx/global
@@ -179,10 +174,12 @@ innodb_log_buffer_size = 4M
 slow_query_log = 1
 query_cache_limit = 512K
 query_cache_size = 128M
-skip-name-resolve" > "/usr/local/etc/my.cnf"
+skip-name-resolve" > "/etc/my.cnf"
 echo "${boldgreen}MariaDB installed and running.${txtreset}"
-echo "${yellow}Installing DNSmasq.${txtreset}"
 echo "${yellow}Restarting services....${txtreset}"
+sudo service mysql restart
+sudo service nginx restart
+sudo service php7.2-fpm restart
 # These need to be running as root, because of the port 80 and other privileges.
 
 echo "${boldgreen}You should now be able to use http://localhost. If not, test with commands sudo nginx -t and sudo php-fpm7.2 -t and fix errors if any. Add new vhosts to /etc/nginx/sites-available and symlink them just like you would do in production. Have fun!${txtreset}"
