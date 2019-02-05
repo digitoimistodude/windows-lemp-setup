@@ -591,7 +591,7 @@ sudo echo "#
 #
 # include all files from the config directory
 #
-!includedir /usr/local/etc/my.cnf.d
+#!includedir /etc/my.cnf.d
 
 [mysqld]
 innodb_log_file_size = 32M
