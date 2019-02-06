@@ -39,31 +39,14 @@ server {
 }
 ````
 
-Default my.cnf would be something like this (already added by install.sh in `/etc/my.cnf`:
+Your `/c/Windows/System32/drivers/etc/hosts` file should always be set up site based like this:
 
-````
-#
-# This group is read both both by the client and the server
-# use it for options that affect everything
-#
-[client-server]
-
-#
-# include all files from the config directory
-#
-!includedir /usr/local/etc/my.cnf.d
-
-[mysqld]
-innodb_log_file_size = 32M
-innodb_buffer_pool_size = 1024M
-innodb_log_buffer_size = 4M
-slow_query_log = 1
-query_cache_limit = 512K
-query_cache_size = 128M
-skip-name-resolve
+```` bash
+127.0.0.1 site.test www.site.tset
+127.0.0.1 anothersite.test www.anothersite.test
 ````
 
-For mysql, remember to run `mysql_secure_installation`. Your logs can be found at `/usr/local/var/mysql/yourcomputername.err` (where yourcomputername is obviously your hostname).
+For mysql, remember to run `mysql_secure_installation`. Your logs can be found at `/var/mysql/yourcomputername.err` (where yourcomputername is obviously your hostname).
 
 After that, get to know [dudestack](https://github.com/digitoimistodude/dudestack) to get everything up and running smoothly. Current version of dudestack supports Windows LEMP stack.
 
