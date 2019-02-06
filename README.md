@@ -49,5 +49,3 @@ Your `/c/Windows/System32/drivers/etc/hosts` file should always be set up site b
 For mysql, remember to run `mysql_secure_installation`. Your logs can be found at `/var/mysql/yourcomputername.err` (where yourcomputername is obviously your hostname).
 
 After that, get to know [dudestack](https://github.com/digitoimistodude/dudestack) to get everything up and running smoothly. Current version of dudestack supports Windows LEMP stack.
-
-You should remember to add vhosts to your /etc/hosts file, for example: `127.0.0.1 site.test`.
