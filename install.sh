@@ -582,25 +582,33 @@ sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F2
 sudo add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://ftp.yz.yamagata-u.ac.jp/pub/dbms/mariadb/repo/10.1/ubuntu xenial main'
 sudo apt -y update
 sudo apt-get install -y mariadb-client libmariadbd-dev mariadb-server
-sudo echo "#
+sudo echo "# The MariaDB configuration file
+#
+# The MariaDB/MySQL tools read configuration files in the following order:
+# 1. "/etc/mysql/mariadb.cnf" (this file) to set global defaults,
+# 2. "/etc/mysql/conf.d/*.cnf" to set global options.
+# 3. "/etc/mysql/mariadb.conf.d/*.cnf" to set MariaDB-only options.
+# 4. "~/.my.cnf" to set user-specific options.
+#
+# If the same option is defined multiple times, the last one will apply.
+#
+# One can use all long options that the program supports.
+# Run program with --help to get a list of available options and with
+# --print-defaults to see which it would actually understand and use.
+
+#
 # This group is read both both by the client and the server
 # use it for options that affect everything
 #
+[mysqld]
+bind-address = 127.0.0.1
+skip-name-resolve
+
 [client-server]
 
-#
-# include all files from the config directory
-#
-#!includedir /etc/my.cnf.d
-
-[mysqld]
-innodb_log_file_size = 32M
-innodb_buffer_pool_size = 1024M
-innodb_log_buffer_size = 4M
-slow_query_log = 1
-query_cache_limit = 512K
-query_cache_size = 128M
-skip-name-resolve" > "/etc/my.cnf"
+# Import all .cnf files from configuration directory
+!includedir /etc/mysql/conf.d/
+!includedir /etc/mysql/mariadb.conf.d/" > "/etc/mysql/my.cnf"
 echo "${boldgreen}MariaDB installed and running.${txtreset}"
 echo "${yellow}Restarting services....${txtreset}"
 sudo service mysql restart
