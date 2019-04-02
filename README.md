@@ -49,3 +49,37 @@ Your `/c/Windows/System32/drivers/etc/hosts` file should always be set up site b
 For mysql, remember to run `mysql_secure_installation`. Your logs can be found at `/var/mysql/yourcomputername.err` (where yourcomputername is obviously your hostname).
 
 After that, get to know [dudestack](https://github.com/digitoimistodude/dudestack) to get everything up and running smoothly. Current version of dudestack supports Windows LEMP stack.
+
+### Running LEMP
+
+If for some reason services won't start on startup, you can restart them with these commands:
+
+#### MySQL
+
+``` bash
+sudo service mysql start
+```
+
+#### nginx
+
+``` bash
+sudo service nginx start
+```
+
+If you get FAIL, test if config is OK with:
+
+``` bash
+sudo nginx -t
+```
+
+### php-fpm
+
+``` bash
+sudo service php7.2-fpm start
+```
+
+If you get FAIL, test if config is OK with:
+
+``` bash
+sudo php-fpm7.2 -t
+```
