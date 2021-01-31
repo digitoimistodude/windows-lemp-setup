@@ -5,7 +5,7 @@ Although we use MacOS for web development ([macos-lemp-setup](https://github.com
 ### Prequisites 
 
 1. [Install Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10), choose Ubuntu 16.04 if possible
-2. Mount projects: `sudo mv /var/www/html ~/ && rm -rf /var/www && sudo ln -s /mnt/c/Users/yourusername/Projects /var/www && sudo mv ~/html /var/www/`
+2. Mount projects: `sudo rm -rf /var/www && sudo ln -s /mnt/c/Users/yourusername/Projects /var/www`
 3. Select all in install.sh and paste to terminal (for some reason doesn't work by running directly)
 
 **Please note:** Don't trust blindly to the script, use only if you know what you are doing. You can view the file [here](https://github.com/digitoimistodude/windows-lemp-setup/blob/master/install.sh) if having doubts what commands are being run. However, script is tested working many times and should be safe to run even if you have some or all of the components already installed.
