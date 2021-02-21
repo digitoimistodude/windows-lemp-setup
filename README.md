@@ -124,6 +124,10 @@ If you get FAIL, test if config is OK with:
 sudo php-fpm7.2 -t
 ```
 
+### Databases
+
+As Windows unfortunately doesn't have a great MySQL app like Sequel Pro for macOS, you need to use [Adminer](https://www.adminer.org/). Just get the adminer.php file to somewhere accessible and you can control your databases that way.
+
 ### SSL certificates and other post installs
 
 Things like HTTPS can be installed the same manner than in [macos-lemp-setup](https://github.com/digitoimistodude/macos-lemp-setup#certificates-for-localhost).
