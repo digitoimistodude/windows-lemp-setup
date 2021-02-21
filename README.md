@@ -83,3 +83,11 @@ If you get FAIL, test if config is OK with:
 ``` bash
 sudo php-fpm7.2 -t
 ```
+
+### Possible issues
+
+Start script doesn't run properly, probably because of Windows character encoding. It can cause issues like this where folder names are mangled:
+
+![Screenshot](https://i.imgur.com/aONfnoq.png)
+
+In this case just rename the files and folders accordingly.
