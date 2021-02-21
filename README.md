@@ -12,6 +12,25 @@ Although we use MacOS for web development ([macos-lemp-setup](https://github.com
 
 ### Post install
 
+You should double check your /etc/nginx/php7.conf looks like this, otherwise nothing works:
+
+```` nginx
+location ~ \.php$ {
+  proxy_intercept_errors on;
+  try_files $uri /index.php;
+  fastcgi_split_path_info ^(.+\.php)(/.+)$;
+  include fastcgi_params;
+  fastcgi_read_timeout 300;
+  fastcgi_buffer_size 128k;
+  fastcgi_buffers 8 128k;
+  fastcgi_busy_buffers_size 128k;
+  fastcgi_temp_file_write_size 128k;
+  fastcgi_index index.php;
+  fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+  fastcgi_pass 127.0.0.1:9000;
+}
+````
+
 You may want to add your user and group correctly to `/etc/php/7.2/fpm/pool.d/www.conf` and set these to the bottom:
 
 ```` nginx
@@ -25,6 +44,25 @@ request_slowlog_timeout = 10
 php_admin_value[upload_max_filesize] = 100M
 php_admin_value[post_max_size] = 100M
 ````
+
+Also double check these lines are correct:
+
+```` nginx
+listen.allowed_clients = 127.0.0.1, localhost
+````
+
+And:
+
+```` nginx
+;listen = /run/php/php7.2-fpm.sock
+listen = 9000
+````
+
+After you restart with these commands you should get Windows Firewall prompt, approve everything.
+
+``` bash
+sudo service php7.2-fpm start && sudo service nginx restart
+```
 
 Default vhost could be something like:
 
