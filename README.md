@@ -46,6 +46,8 @@ Your `/c/Windows/System32/drivers/etc/hosts` file should always be set up site b
 127.0.0.1 anothersite.test www.anothersite.test
 ````
 
+You cannot directly edit hosts file via WSL/Command line so you should use a tool like [HostsFileEditor](https://github.com/scottlerch/HostsFileEditor).
+
 For mysql, remember to run `mysql_secure_installation`. Your logs can be found at `/var/mysql/yourcomputername.err` (where yourcomputername is obviously your hostname).
 
 After that, get to know [dudestack](https://github.com/digitoimistodude/dudestack) to get everything up and running smoothly. Current version of dudestack supports Windows LEMP stack.
