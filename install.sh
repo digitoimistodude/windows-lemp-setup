@@ -11,14 +11,15 @@ white=$(tput setaf 7)
 txtreset=$(tput sgr0)
 
 echo "${yellow}Updating apt...${txtreset}"
-sudo apt-get update
+sudo apt update
 echo "${boldgreen}Dependencies installed and up to date.${txtreset}"
 echo "${yellow}Installing nginx.${txtreset}"
-sudo apt-get install nginx-full -y
+sudo apt install -y nginx-full
 sudo systemctl enable nginx
 sudo service nginx start
 echo "${boldgreen}nginx installed and running.${txtreset}"
 echo "${yellow}Setting up nginx.${txtreset}"
+sudo mkdir -p /etc/nginx
 sudo mkdir -p /etc/nginx/global
 sudo mkdir -p /etc/nginx/sites-enabled
 sudo mkdir -p /etc/nginx/sites-available
@@ -35,7 +36,6 @@ events {
 }
 
 http {
-
         ##
         # Optimization
         ##
@@ -74,25 +74,28 @@ http {
         ##
 
         include /etc/nginx/sites-enabled/*;
-}" > "/etc/nginx/nginx.conf"
+}" > /etc/nginx/nginx.conf
 sudo mkdir -p /var/log/nginx
 sudo touch /var/log/nginx/access.log
 sudo chmod 777 /var/log/nginx/access.log
 sudo touch /var/log/nginx/error.log
 sudo chmod 777 /var/log/nginx/error.log
-sudo echo "location ~ \.php$ {
-        proxy_set_header X-Forwarded-Proto $scheme;
-        fastcgi_split_path_info ^(.+\.php)(/.+)$;
-        #fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
-        fastcgi_pass 127.0.0.1:9000;
-        fastcgi_index index.php;
-        include fastcgi_params;
-        fastcgi_buffering off; # This must be here for WSL as of 11/28/2018
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        fastcgi_param PHP_VALUE \"upload_max_filesize = 20M \n post_max_size=21M\";
-        fastcgi_param  PATH_INFO          $fastcgi_script_name;
-        include /etc/nginx/fastcgi.conf;
-}" > "/etc/nginx/php7.conf"
+sudo echo "location ~ \.php\$ {
+  proxy_intercept_errors on;
+  try_files $uri /index.php;
+  fastcgi_split_path_info ^(.+\.php)(/.+)\$;
+  include fastcgi_params;
+  fastcgi_read_timeout 300;
+  fastcgi_buffer_size 128k;
+  fastcgi_buffers 8 128k;
+  fastcgi_busy_buffers_size 128k;
+  fastcgi_temp_file_write_size 128k;
+  fastcgi_index index.php;
+  fastcgi_buffering off; # This must be here for WSL as of 11/28/2018
+  fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+  fastcgi_pass 127.0.0.1:9000;
+}" > /etc/nginx/php7.conf
+sudo mkdir -p /etc/nginx/global
 sudo echo "# WordPress single site rules.
 # Designed to be included in any server {} block.
 # Upstream to abstract backend connection(s) for php
@@ -108,8 +111,6 @@ location = /robots.txt {
 }
 
 location / {
-        # This is cool because no php is touched for static content.
-        # include the "?\$args" part so non-default permalinks doesn't break when using query string
         try_files \$uri \$uri/ /index.php?\$args;
 }
 
@@ -117,9 +118,10 @@ location / {
 rewrite /wp-admin\$ \$scheme://\$host\$uri/ permanent;
 
 # Directives to send expires headers and turn off 404 error logging.
+sudo mkdir -p /etc/nginx/global
 location ~* ^.+\.(ogg|ogv|svg|svgz|eot|otf|woff|mp4|ttf|rss|atom|jpg|jpeg|gif|png|ico|zip|tgz|gz|rar|bz2|doc|xls|exe|ppt|tar|mid|midi|wav|bmp|rtf)\$ {
        access_log off; log_not_found off; expires max;
-}" > "/etc/nginx/global/wordpress.conf"
+}" > /etc/nginx/global/wordpress.conf
 sudo echo "server {
         listen 80 default_server;
         root html;
@@ -127,12 +129,12 @@ sudo echo "server {
         server_name localhost;
         include php7.conf;
         #include global/wordpress.conf;
-}" > "/etc/nginx/sites-available/default"
+}" > /etc/nginx/sites-available/default
 sudo ln -sfnv /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 echo "${yellow}Installing PHP.${txtreset}"
-sudo add-apt-repository ppa:ondrej/php -y
-sudo apt-get update
-sudo apt-get install php7.2-cli php7.2-common php7.2-curl php7.2-fpm php7.2-gd php7.2-imap php7.2-intl php7.2-json php7.2-mbstring php7.2-mysql php7.2-opcache php7.2-pspell php7.2-readline php7.2-recode php7.2-soap php7.2-sqlite3 php7.2-tidy php7.2-xml php7.2-xmlrpc php7.2-xsl php7.2-zip zip unzip -y
+sudo add-apt-repository -y ppa:ondrej/php
+sudo apt update
+sudo apt install -y php7.2-cli php7.2-common php7.2-curl php7.2-fpm php7.2-gd php7.2-imap php7.2-intl php7.2-json php7.2-mbstring php7.2-mysql php7.2-opcache php7.2-pspell php7.2-readline php7.2-recode php7.2-soap php7.2-sqlite3 php7.2-tidy php7.2-xml php7.2-xmlrpc php7.2-xsl php7.2-zip zip unzip
 sudo echo "; Start a new pool named 'www'.
 ; the variable $pool can be used in any directive and will be replaced by the
 ; pool name ('www' here)
@@ -450,8 +452,6 @@ pm.max_spare_servers = 3
 ;      e.g. for a ISO8601 formatted timestring, use: %{%Y-%m-%dT%H:%M:%S%z}t
 ;  %u: remote user
 ;
-; Default: "%R - %u %t \"%m %r\" %s"
-;access.format = "%R - %u %t \"%m %r%Q%q\" %s %f %{mili}d %{kilo}M %C%%"
 
 ; The log file for slow requests
 ; Default Value: not set
@@ -511,7 +511,7 @@ pm.max_spare_servers = 3
 ; Prevents arbitrary environment variables from reaching FPM worker processes
 ; by clearing the environment in workers before env vars specified in this
 ; pool configuration are added.
-; Setting to "no" will make all environment variables available to PHP code
+; Setting to \"no\" will make all environment variables available to PHP code
 ; via getenv(), $_ENV and $_SERVER.
 ; Default Value: yes
 ;clear_env = no
@@ -577,29 +577,12 @@ sudo systemctl enable php7.2-fpm
 sudo php-fpm7.2 -t
 echo "${boldgreen}PHP installed and running.${txtreset}"
 echo "${yellow}Installing MariaDB.${txtreset}"
-sudo apt-get install -y software-properties-common
+sudo apt install -y software-properties-common
 sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
 sudo add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://ftp.yz.yamagata-u.ac.jp/pub/dbms/mariadb/repo/10.1/ubuntu xenial main'
 sudo apt -y update
-sudo apt-get install -y mariadb-client libmariadbd-dev mariadb-server
+sudo apt install -y mariadb-client libmariadbd-dev mariadb-server
 sudo echo "# The MariaDB configuration file
-#
-# The MariaDB/MySQL tools read configuration files in the following order:
-# 1. "/etc/mysql/mariadb.cnf" (this file) to set global defaults,
-# 2. "/etc/mysql/conf.d/*.cnf" to set global options.
-# 3. "/etc/mysql/mariadb.conf.d/*.cnf" to set MariaDB-only options.
-# 4. "~/.my.cnf" to set user-specific options.
-#
-# If the same option is defined multiple times, the last one will apply.
-#
-# One can use all long options that the program supports.
-# Run program with --help to get a list of available options and with
-# --print-defaults to see which it would actually understand and use.
-
-#
-# This group is read both both by the client and the server
-# use it for options that affect everything
-#
 [mysqld]
 bind-address = 127.0.0.1
 skip-name-resolve
@@ -608,7 +591,7 @@ skip-name-resolve
 
 # Import all .cnf files from configuration directory
 !includedir /etc/mysql/conf.d/
-!includedir /etc/mysql/mariadb.conf.d/" > "/etc/mysql/my.cnf"
+!includedir /etc/mysql/mariadb.conf.d/" > /etc/mysql/my.cnf
 echo "${boldgreen}MariaDB installed and running.${txtreset}"
 echo "${yellow}Restarting services....${txtreset}"
 sudo service mysql restart
