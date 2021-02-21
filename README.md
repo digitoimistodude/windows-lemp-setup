@@ -26,10 +26,10 @@ location ~ \.php$ {
   fastcgi_busy_buffers_size 128k;
   fastcgi_temp_file_write_size 128k;
   fastcgi_index index.php;
+  fastcgi_buffering off; # This must be here for WSL as of 11/28/2018
   fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
   fastcgi_pass 127.0.0.1:9000;
-}
-````
+}````
 
 You may want to add your user and group correctly to `/etc/php/7.2/fpm/pool.d/www.conf` and set these to the bottom:
 
