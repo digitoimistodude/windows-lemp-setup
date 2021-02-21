@@ -128,6 +128,32 @@ sudo php-fpm7.2 -t
 
 As Windows unfortunately doesn't have a great MySQL app like Sequel Pro for macOS, you need to use [Adminer](https://www.adminer.org/). Just get the adminer.php file to somewhere accessible and you can control your databases that way.
 
+If you get no matter what you do:
+
+``` bash
+rolle@Infinity:~$ mysql -u root -p
+Enter password:
+ERROR 1698 (28000): Access denied for user 'root'@'localhost'
+```
+
+First make sure you have installed MySQL as instructed [here](https://github.com/digitoimistodude/macos-lemp-setup#post-install) (my.cnf and sudo mysql_secure_installation are the most important part.
+
+After, as instructed [here](https://stackoverflow.com/questions/41645309/mysql-error-access-denied-for-user-rootlocalhost):
+
+``` bash
+sudo mysql
+```
+
+Then in MariaDB/MySQL console (do not change nothing in following sql commands):
+
+```
+update mysql.user set plugin = 'mysql_native_password' where User='root';
+FLUSH PRIVILEGES;
+exit;
+```
+
+Now you should be able to login with password `mysql -u root -p` and use adminer properly.
+
 ### SSL certificates and other post installs
 
 Things like HTTPS can be installed the same manner than in [macos-lemp-setup](https://github.com/digitoimistodude/macos-lemp-setup#certificates-for-localhost).
