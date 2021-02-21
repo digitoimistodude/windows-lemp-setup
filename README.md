@@ -84,6 +84,10 @@ If you get FAIL, test if config is OK with:
 sudo php-fpm7.2 -t
 ```
 
+### SSL certificates and other post installs
+
+Things like HTTPS can be installed the same manner than in [macos-lemp-setup](https://github.com/digitoimistodude/macos-lemp-setup#certificates-for-localhost).
+
 ### Possible issues
 
 Start script doesn't run properly, probably because of Windows character encoding. It can cause issues like this where folder names are mangled:
