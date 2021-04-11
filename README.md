@@ -18,7 +18,7 @@ Although we use MacOS for web development ([macos-lemp-setup](https://github.com
 
 You should double check your /etc/nginx/php7.conf looks like this, otherwise nothing works:
 
-```` nginx
+``` nginx
 location ~ \.php$ {
   proxy_intercept_errors on;
   try_files $uri /index.php;
@@ -33,11 +33,12 @@ location ~ \.php$ {
   fastcgi_buffering off; # This must be here for WSL as of 11/28/2018
   fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
   fastcgi_pass 127.0.0.1:9000;
-}````
+}
+```
 
 You may want to add your user and group correctly to `/etc/php/7.2/fpm/pool.d/www.conf` and set these to the bottom:
 
-```` nginx
+``` nginx
 catch_workers_output = yes
 php_flag[display_errors] = On
 php_admin_value[error_log] = /var/log/fpm7.2-php.www.log 
@@ -47,7 +48,7 @@ php_admin_value[memory_limit] = 1024M
 request_slowlog_timeout = 10
 php_admin_value[upload_max_filesize] = 100M
 php_admin_value[post_max_size] = 100M
-````
+```
 
 Also double check these lines are correct:
 
