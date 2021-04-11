@@ -1,12 +1,16 @@
+| :bangbang: | **This repository is highly experimental. Setup *kinda* works, but it does not have a proper documentation. We do not use Windows machines professionally so it's difficult to keep this up to date and well documented. Included versions may become unsupported at some point and setup script may break from time to time. Consider our [native LEMP server for macOS](https://github.com/digitoimistodude/macos-lemp-setup) instead if you have access to a Mac computer.**  |
+|:------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+
 ## Install local LEMP for Windows
 
-Although we use MacOS for web development ([macos-lemp-setup](https://github.com/digitoimistodude/macos-lemp-setup) and [marlin-vagrant](https://github.com/digitoimistodude/marlin-vagrant)), Windows might still be needed when auditing with Internet Explorer and Edge on different desktop PC or laptop that doesn't have unix. The purpose of this repository is to easily get a basic Windows dev environment on **Windows 10 Pro** or newer with Digitoimisto Dude's GitHub projects.
+Although we use MacOS for web development ([macos-lemp-setup](https://github.com/digitoimistodude/macos-lemp-setup), Windows might still be needed when auditing with Internet Explorer and Edge on different desktop PC or laptop that doesn't have unix OR if we need to test things at home on a Desktop PC we might have. The purpose of this repository is to "easily" get a basic Windows dev environment on **Windows 10 Pro** or newer with Digitoimisto Dude's GitHub projects.
 
 ### Prequisites 
 
-1. [Install Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10), choose Ubuntu 16.04 if possible
+1. [Install Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10), install [version 16.04](https://gist.github.com/xynova/87beae35688476efb2ee290d3926f5bb)
 2. Mount projects: `sudo rm -rf /var/www && sudo ln -s /mnt/c/Users/yourusername/Projects /var/www`
-3. [Open install file](https://raw.githubusercontent.com/digitoimistodude/windows-lemp-setup/master/install.sh), select all (<kbd>Ctrl</kbd> + <kbd>A</kbd>), copy (<kbd>Ctrl</kbd> + <kbd>C</kbd>) and paste everything to your Terminal window (<kbd>Ctrl</kbd> + <kbd>V</kbd>) (for some reason doesn't work by running directly)
+3. Download and run [install.sh](https://raw.githubusercontent.com/digitoimistodude/windows-lemp-setup/master/install.sh). Sometimes Windows won't run it properly so you might need to Open [install.sh file](https://raw.githubusercontent.com/digitoimistodude/windows-lemp-setup/master/install.sh), select all (<kbd>Ctrl</kbd> + <kbd>A</kbd>), copy (<kbd>Ctrl</kbd> + <kbd>C</kbd>) and paste everything to your Terminal window (<kbd>Ctrl</kbd> + <kbd>V</kbd>). If you have better suggestions on how to run this file properly, please let us know.
 
 **Please note:** Don't trust blindly to the script, use only if you know what you are doing. You can view the file [here](https://github.com/digitoimistodude/windows-lemp-setup/blob/master/install.sh) if having doubts what commands are being run. However, script is tested working many times and should be safe to run even if you have some or all of the components already installed.
 
@@ -156,7 +160,7 @@ Now you should be able to login with password `mysql -u root -p` and use adminer
 
 ### SSL certificates and other post installs
 
-Things like HTTPS can be installed the same manner than in [macos-lemp-setup](https://github.com/digitoimistodude/macos-lemp-setup#certificates-for-localhost).
+Things like HTTPS can be installed the same manner than in [macos-lemp-setup](https://github.com/digitoimistodude/macos-lemp-setup#certificates-for-localhost), practically via [mkcert](https://github.com/FiloSottile/mkcert). Please note: We never got SSL to work successfully on Windows 10. Please let us know if you did!
 
 ### Possible issues
 
